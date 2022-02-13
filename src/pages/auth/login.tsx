@@ -10,4 +10,5 @@ function Login() {
   )
 }
 
+Login.Title = "Login"
 export default Login
