@@ -17,7 +17,6 @@ function login(req: NextApiRequest, res: NextApiResponse<Response>) {
         serialize("AUTH_TOKEN", token, {
           path: "/",
           sameSite: true,
-          httpOnly: true,
           maxAge: 31556952,
           secure: process.env.NODE_ENV == "production",
         })

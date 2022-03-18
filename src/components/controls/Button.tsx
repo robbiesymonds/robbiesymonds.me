@@ -1,4 +1,4 @@
-import Spinner from "@ui/display/Spinner"
+import { Spinner } from "@ui/display"
 import { memo } from "react"
 
 interface ButtonProps {

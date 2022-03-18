@@ -1,5 +1,5 @@
 import { memo } from "react"
-import ErrorIcon from "./icons/ErrorIcon"
+import { ErrorIcon } from "./icons"
 
 interface ErrorMessageProps {
   children?: string

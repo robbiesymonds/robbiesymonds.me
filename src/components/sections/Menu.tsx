@@ -1,6 +1,7 @@
 import { MenuItem } from "@constants/navigation"
 import { Logo } from "@ui/display"
 import { LogoutIcon } from "@ui/display/icons"
+import useAuth from "@utils/useAuth"
 import Link from "next/link"
 import { memo } from "react"
 
@@ -9,6 +10,7 @@ interface MenuProps {
 }
 
 const Menu = ({ data }: MenuProps) => {
+  const { isAuth } = useAuth()
   return (
     <>
       <style jsx>{`
@@ -53,8 +55,8 @@ const Menu = ({ data }: MenuProps) => {
         }
 
         .item :global(svg) {
-          width: 25%;
-          height: 25%;
+          width: 30%;
+          height: 30%;
         }
 
         .logout {
@@ -71,22 +73,28 @@ const Menu = ({ data }: MenuProps) => {
           <Logo />
         </div>
 
-        {data &&
-          data.map(({ icon, href }, i) => (
-            <div key={i} className="item">
-              <Link href={href}>
-                <a>{icon}</a>
-              </Link>
-            </div>
-          ))}
+        {isAuth && (
+          <>
+            {data &&
+              data.map(({ Icon, href }, i) => (
+                <Link key={href} href={href}>
+                  <a>
+                    <div className="item">
+                      <Icon />
+                    </div>
+                  </a>
+                </Link>
+              ))}
 
-        <Link href="/api/auth/logout">
-          <a>
-            <div className="logout item">
-              <LogoutIcon />
-            </div>
-          </a>
-        </Link>
+            <Link href="/api/auth/logout">
+              <a>
+                <div className="logout item">
+                  <LogoutIcon />
+                </div>
+              </a>
+            </Link>
+          </>
+        )}
       </div>
     </>
   )

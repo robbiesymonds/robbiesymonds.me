@@ -1,4 +1,4 @@
-import ErrorMessage from "@ui/display/ErrorMessage"
+import { ErrorMessage } from "@ui/display"
 import { memo } from "react"
 
 interface TextFieldProps {

@@ -1,9 +1,18 @@
+import { SavingsIcon } from "@ui/display/icons"
+import { MemoExoticComponent } from "react"
+
 export interface MenuItem {
-  icon: JSX.Element
+  Icon: MemoExoticComponent<() => JSX.Element>
   href: string
   alt: string
 }
 
-const MENU_ITEMS: MenuItem[] = []
+const MENU_ITEMS: MenuItem[] = [
+  {
+    Icon: SavingsIcon,
+    href: "/dashboard/invoices",
+    alt: "Invoices",
+  },
+]
 
 export default MENU_ITEMS
