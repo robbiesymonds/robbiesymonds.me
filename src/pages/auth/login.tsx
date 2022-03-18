@@ -1,14 +1,15 @@
+import { Heading } from "@ui/display"
 import { LoginForm } from "@ui/forms"
+import { Dashboard } from "@ui/sections"
 
 function Login() {
   return (
     <>
-      <h1>Login</h1>
-
       <LoginForm />
     </>
   )
 }
 
 Login.Title = "Login"
+Login.Layout = Dashboard
 export default Login

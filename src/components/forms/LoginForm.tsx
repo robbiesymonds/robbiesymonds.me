@@ -1,46 +1,58 @@
 import { Response } from "@interfaces/api"
-import { TextField } from "@ui/controls"
+import { Button, TextField } from "@ui/controls"
+import { Heading } from "@ui/display"
+import useFetch from "@utils/useFetch"
 import { useFormik } from "formik"
 import { useRouter } from "next/router"
-import React from "react"
+import { memo } from "react"
 
 const LoginForm = () => {
   const router = useRouter()
-  const [error, setError] = React.useState<string>(null)
+
+  const { data, loading, error, callback } = useFetch<Response>(`/api/auth/login`, {
+    useCallback: true,
+  })
 
   const formikProps = useFormik({
     initialValues: {
       password: "",
     },
-
     onSubmit: async (values) => {
-      const res = await fetch(`/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      })
-      const data: Response = await res.json()
+      const data = await callback({ body: JSON.stringify(values) })
       if (data.success) router.push("/dashboard")
-      else setError(data.error)
     },
   })
 
   return (
-    <form onSubmit={formikProps.handleSubmit}>
-      <TextField
-        name="password"
-        type="password"
-        onChange={formikProps.handleChange}
-      />
-
-      <button
-        type="submit"
-        disabled={!(formikProps.dirty && formikProps.isValid)}>
-        Submit
-      </button>
-      {error}
-    </form>
+    <>
+      <style jsx>{`
+        form {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          row-gap: 2rem;
+          width: 100%;
+          height: calc(100vh - 4rem);
+        }
+      `}</style>
+      <form onSubmit={formikProps.handleSubmit}>
+        <TextField
+          name="password"
+          type="password"
+          onChange={formikProps.handleChange}
+          maxWidth={20}
+          error={error}
+        />
+        <Button
+          loading={loading}
+          disabled={!(formikProps.dirty && formikProps.isValid)}
+          type="submit">
+          Unlock
+        </Button>
+      </form>
+    </>
   )
 }
 
-export default React.memo(LoginForm)
+export default memo(LoginForm)

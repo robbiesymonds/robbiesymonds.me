@@ -1,8 +1,9 @@
 import { Response } from "@interfaces/api"
+import useProtocol from "@utils/useProtocol"
 import { serialize } from "cookie"
 import { NextApiRequest, NextApiResponse } from "next"
 
-function logout(req: NextApiRequest, res: NextApiResponse<Response>) {
+function logout(req: NextApiRequest, res: NextApiResponse): NextApiResponse<Response> {
   res.setHeader(
     "Set-Cookie",
     serialize("AUTH_TOKEN", null, {
@@ -16,4 +17,4 @@ function logout(req: NextApiRequest, res: NextApiResponse<Response>) {
   return res.status(200).redirect("/")
 }
 
-export default logout
+export default useProtocol({ GET: logout })

@@ -1,8 +1,8 @@
 import { MenuItem } from "@constants/navigation"
-import React from "react"
-import Link from "next/link"
 import { Logo } from "@ui/display"
 import { LogoutIcon } from "@ui/display/icons"
+import Link from "next/link"
+import { memo } from "react"
 
 interface MenuProps {
   data: MenuItem[]
@@ -13,7 +13,7 @@ const Menu = ({ data }: MenuProps) => {
     <>
       <style jsx>{`
         .menu {
-          position: sticky;
+          position: fixed;
           top: 0;
           width: 5rem;
           background-color: var(--theme-colors-menu);
@@ -21,7 +21,6 @@ const Menu = ({ data }: MenuProps) => {
           border-right: 1px solid var(--theme-colors-border);
           flex-shrink: 0;
           flex-grow: 0;
-          position: relative;
         }
 
         .logo {
@@ -45,7 +44,7 @@ const Menu = ({ data }: MenuProps) => {
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          color: white;
+          color: var(--theme-colors-text);
           text-decoration: none;
         }
 
@@ -59,6 +58,8 @@ const Menu = ({ data }: MenuProps) => {
         }
 
         .logout {
+          opacity: 0.75;
+          color: #eee;
           position: absolute;
           bottom: 0;
           left: 0;
@@ -73,7 +74,9 @@ const Menu = ({ data }: MenuProps) => {
         {data &&
           data.map(({ icon, href }, i) => (
             <div key={i} className="item">
-              <Link href={href}>{icon}</Link>
+              <Link href={href}>
+                <a>{icon}</a>
+              </Link>
             </div>
           ))}
 
@@ -89,4 +92,4 @@ const Menu = ({ data }: MenuProps) => {
   )
 }
 
-export default React.memo(Menu)
+export default memo(Menu)

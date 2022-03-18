@@ -1,14 +1,7 @@
-import { Heading } from "@ui/display"
 import { Dashboard } from "@ui/sections"
 
 function Home() {
-  return (
-    <>
-      <Heading size={2} bold>
-        Dashboard
-      </Heading>
-    </>
-  )
+  return <></>
 }
 
 Home.Title = "Dashboard"

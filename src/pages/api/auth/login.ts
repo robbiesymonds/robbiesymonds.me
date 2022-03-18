@@ -1,7 +1,8 @@
-import { Response } from "@interfaces/api"
+import { Response, RESPONSES } from "@interfaces/api"
 import { NextApiRequest, NextApiResponse } from "next"
 import { serialize } from "cookie"
 import { sign } from "jsonwebtoken"
+import useProtocol from "@utils/useProtocol"
 
 function login(req: NextApiRequest, res: NextApiResponse<Response>) {
   const { password } = req.body
@@ -22,13 +23,10 @@ function login(req: NextApiRequest, res: NextApiResponse<Response>) {
         })
       )
       return res.status(200).json({ success: true })
-    } else
-      return res.status(401).json({ success: false, error: "Wrong password!" })
+    } else return res.status(401).json({ success: false, error: RESPONSES.WRONG_PASS })
   }
 
-  return res
-    .status(401)
-    .json({ success: false, error: "Something went wrong!" })
+  return res.status(401).json({ success: false, error: RESPONSES.SOMETHING_WENT_WRONG })
 }
 
-export default login
+export default useProtocol({ POST: login })

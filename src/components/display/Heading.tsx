@@ -1,16 +1,16 @@
-import React from "react"
-
-interface HeadingProps {
-  children: string
-  size: fontSizes
-  bold?: boolean
-}
+import { memo } from "react"
 
 type fontSizes = 1 | 2 | 3
+
 const FONT_SIZES: Record<fontSizes, number> = {
   1: 1.5,
   2: 2,
   3: 3.25,
+}
+interface HeadingProps {
+  children: string
+  size: fontSizes
+  bold?: boolean
 }
 
 const Heading = ({ children, size, bold }: HeadingProps) => {
@@ -31,4 +31,4 @@ const Heading = ({ children, size, bold }: HeadingProps) => {
   )
 }
 
-export default React.memo(Heading)
+export default memo(Heading)
