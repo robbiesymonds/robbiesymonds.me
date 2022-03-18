@@ -28,9 +28,10 @@ const Dashboard = ({ children }) => {
         }
 
         .content {
-          width: 100%;
+          width: auto;
           height: 100%;
-          margin-left: 5rem;
+          margin: 2rem;
+          margin-left: 7rem;
         }
       `}</style>
 
