@@ -1,7 +1,7 @@
 import { DataResponse } from "@interfaces/api"
 import React, { useCallback } from "react"
 
-function useFetch<T>(url: string, options?: RequestInit & { useCallback?: boolean }) {
+function useFetch<T>(url: string, options?: RequestInit & { callbackOnly?: boolean }) {
   const [data, setData] = React.useState<T>(null)
   const [error, setError] = React.useState<string>(null)
   const [loading, setLoading] = React.useState<boolean>(false)
@@ -24,7 +24,7 @@ function useFetch<T>(url: string, options?: RequestInit & { useCallback?: boolea
   )
 
   React.useEffect(() => {
-    if (!options.useCallback) runFetch(options)
+    if (!options.callbackOnly) runFetch(options)
   }, [runFetch, options])
 
   return { data, error, loading, callback: runFetch }

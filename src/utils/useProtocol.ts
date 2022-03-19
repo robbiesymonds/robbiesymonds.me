@@ -1,3 +1,4 @@
+import { verify } from "jsonwebtoken"
 import { NextApiRequest, NextApiResponse } from "next"
 
 enum HTTPMethod {
@@ -22,11 +23,14 @@ function useProtocol(handler: ApiHandler) {
       return res.status(405).json({ error: `Method ${req.method} Not Allowed` })
     } else {
       try {
-        await handler[req.method](req, res)
+        const token = req.cookies.AUTH_TOKEN
+        if (token && verify(token, process.env.ACCESS_TOKEN_SECRET)) {
+          await handler[req.method](req, res)
+        } else {
+          return res.status(401).json({ error: `Unauthorized` })
+        }
       } catch (e) {
-        return res.status(401).json({
-          error: process.env.NODE_ENV === "production" ? `Unauthorized` : e,
-        })
+        return res.status(500).json({ error: e })
       }
     }
   }

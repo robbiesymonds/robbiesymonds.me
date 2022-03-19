@@ -1,13 +1,15 @@
 import { ErrorMessage } from "@ui/display"
+import useDimension from "@utils/useDimension"
 import { memo } from "react"
 
 interface TextFieldProps {
   name: string
-  type?: "text" | "password" | "email"
+  type?: "text" | "password" | "email" | "number" | "date"
   placeholder?: string
   disabled?: boolean
+  defaultValue?: string | number
   onChange?: React.ChangeEventHandler<HTMLInputElement>
-  maxWidth?: number
+  maxWidth?: string | number
   error?: string
 }
 
@@ -15,6 +17,8 @@ const TextField = ({
   name,
   type = "text",
   placeholder,
+  disabled,
+  defaultValue,
   onChange,
   maxWidth,
   error,
@@ -23,7 +27,7 @@ const TextField = ({
     <>
       <style jsx>{`
         input {
-          font-family: "Open Sans", sans-serif;
+          font-family: "Roboto", sans-serif;
           color: var(--theme-colors-text);
           font-size: 1rem;
           outline: none;
@@ -36,12 +40,20 @@ const TextField = ({
         }
 
         div {
-          width: ${maxWidth ? "95%" : "auto"};
-          max-width: ${maxWidth}rem;
+          width: 100%;
+          max-width: ${useDimension(maxWidth)};
         }
       `}</style>
       <div>
-        <input name={name} id={name} type={type} placeholder={placeholder} onChange={onChange} />
+        <input
+          name={name}
+          id={name}
+          type={type}
+          placeholder={placeholder}
+          defaultValue={defaultValue}
+          onChange={onChange}
+          disabled={disabled}
+        />
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </div>
     </>

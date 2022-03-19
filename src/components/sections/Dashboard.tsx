@@ -24,7 +24,7 @@ const Dashboard = ({ children }) => {
           padding: 0;
           overflow-x: hidden;
           background-color: var(--theme-colors-background);
-          font-family: "Open Sans";
+          font-family: "Roboto", sans-serif;
         }
 
         .content {
@@ -32,6 +32,7 @@ const Dashboard = ({ children }) => {
           height: 100%;
           margin: 2rem;
           margin-left: 7rem;
+          overflow: hidden;
         }
       `}</style>
 

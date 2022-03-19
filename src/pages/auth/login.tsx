@@ -1,4 +1,3 @@
-import { Heading } from "@ui/display"
 import { LoginForm } from "@ui/forms"
 import { Dashboard } from "@ui/sections"
 

@@ -1,6 +1,5 @@
 import { Response } from "@interfaces/api"
 import { Button, TextField } from "@ui/controls"
-import { Heading } from "@ui/display"
 import useFetch from "@utils/useFetch"
 import { useFormik } from "formik"
 import { useRouter } from "next/router"
@@ -9,8 +8,8 @@ import { memo } from "react"
 const LoginForm = () => {
   const router = useRouter()
 
-  const { data, loading, error, callback } = useFetch<Response>(`/api/auth/login`, {
-    useCallback: true,
+  const { loading, error, callback } = useFetch<Response>(`/api/auth/login`, {
+    callbackOnly: true,
   })
 
   const formikProps = useFormik({

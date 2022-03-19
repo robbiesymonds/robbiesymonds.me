@@ -7,9 +7,17 @@ interface ButtonProps {
   outline?: boolean
   disabled?: boolean
   loading?: boolean
+  onClick?: () => void
 }
 
-const Button = ({ children, type = "button", outline, disabled, loading }: ButtonProps) => {
+const Button = ({
+  children,
+  type = "button",
+  outline,
+  disabled,
+  loading,
+  onClick,
+}: ButtonProps) => {
   return (
     <>
       <style jsx>{`
@@ -57,7 +65,7 @@ const Button = ({ children, type = "button", outline, disabled, loading }: Butto
           transition: all 0.1s;
         }
       `}</style>
-      <button type={type} disabled={disabled}>
+      <button type={type} disabled={disabled} onClick={onClick}>
         <span>{children}</span>
         <div>
           <Spinner />
