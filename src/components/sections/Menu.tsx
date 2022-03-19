@@ -76,7 +76,7 @@ const Menu = ({ data }: MenuProps) => {
         {isAuth && (
           <>
             {data &&
-              data.map(({ Icon, href }, i) => (
+              data.map(({ Icon, href }) => (
                 <Link key={href} href={href}>
                   <a>
                     <div className="item">
