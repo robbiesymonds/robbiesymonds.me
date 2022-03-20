@@ -5,6 +5,7 @@ import { Spinner, Text } from "@ui/display"
 import { DownloadIcon, TuneIcon } from "@ui/display/icons"
 import { EditInvoiceForm } from "@ui/forms"
 import { Card, Modal } from "@ui/layout"
+import useCurrency from "@utils/useCurrency"
 import useFetch from "@utils/useFetch"
 import useInvoiceNumber from "@utils/useInvoiceNumber"
 import { format } from "date-fns"
@@ -14,6 +15,12 @@ interface InvoiceListProps {
   data: Invoice[]
   loading: boolean
   onUpdate?: () => void
+}
+
+const invoiceTotal = (i: Invoice) => {
+  let total: number = 0
+  i.entries.forEach(({ hours, rate }) => (total += hours * rate))
+  return useCurrency(total)
 }
 
 const InvoiceList = ({ data, loading, onUpdate }: InvoiceListProps) => {
@@ -36,7 +43,7 @@ const InvoiceList = ({ data, loading, onUpdate }: InvoiceListProps) => {
       <style jsx>{`
         .invoice {
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-start;
           align-items: center;
           padding: 1rem;
           border-bottom: 1px solid var(--theme-colors-border);
@@ -47,14 +54,13 @@ const InvoiceList = ({ data, loading, onUpdate }: InvoiceListProps) => {
         }
 
         .invoice > div {
+          margin-left: auto;
           display: flex;
           align-items: center;
           column-gap: 1rem;
         }
 
         .actions {
-          border-left: 1px solid var(--theme-colors-border);
-          padding-left: 1rem;
           display: flex;
           column-gap: 0.5rem;
         }
@@ -104,7 +110,22 @@ const InvoiceList = ({ data, loading, onUpdate }: InvoiceListProps) => {
                 {i.recipient}
               </Text>
               <div>
-                <Text>{format(new Date(i.date), "do, LLLL yyyy")}</Text>
+                <Text size="sm" style={{ opacity: 0.5 }}>
+                  {invoiceTotal(i)}
+                </Text>
+                <div
+                  style={{
+                    height: "2rem",
+                    borderLeft: "1px solid var(--theme-colors-border)",
+                    borderRight: "1px solid var(--theme-colors-border)",
+                    padding: "0 1rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}>
+                  <Text style={{ whiteSpace: "nowrap" }}>
+                    {format(new Date(i.date), "do, LLLL yyyy")}
+                  </Text>
+                </div>
                 <div className="actions">
                   <IconButton onClick={() => editInvoice(i)}>
                     <TuneIcon />

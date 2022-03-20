@@ -39,6 +39,7 @@ const IconButton = ({ children, disabled, loading, outline, onClick }: IconButto
             width: 75%;
             height: 75%;
             margin: auto;
+            opacity: 0.9;
           }
 
           button:hover {

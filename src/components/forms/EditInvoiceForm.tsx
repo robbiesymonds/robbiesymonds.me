@@ -1,7 +1,8 @@
 import { InvoiceTask } from "@interfaces/invoice"
 import InvoiceTasks from "@ui/blocks/InvoiceTasks"
-import { Button, TextField } from "@ui/controls"
+import { Button, IconButton, TextField } from "@ui/controls"
 import { ErrorMessage } from "@ui/display"
+import { DeleteIcon } from "@ui/display/icons"
 import useFetch from "@utils/useFetch"
 import { useFormik } from "formik"
 import { memo } from "react"
@@ -20,6 +21,7 @@ interface EditInvoiceFormProps {
 
 const EditInvoiceForm = ({ onSuccess, initialValues }: EditInvoiceFormProps) => {
   const { loading, error, callback } = useFetch("/api/invoices/update", { callbackOnly: true })
+  const deleteQuery = useFetch("/api/invoices/delete", { callbackOnly: true })
 
   const formik = useFormik({
     initialValues,
@@ -29,6 +31,11 @@ const EditInvoiceForm = ({ onSuccess, initialValues }: EditInvoiceFormProps) => 
       if (data.success) onSuccess()
     },
   })
+
+  const deleteInvoice = async (id: string) => {
+    const data = await deleteQuery.callback({ body: JSON.stringify({ id }) })
+    if (data.success) onSuccess()
+  }
 
   return (
     <>
@@ -48,10 +55,12 @@ const EditInvoiceForm = ({ onSuccess, initialValues }: EditInvoiceFormProps) => 
           display: flex;
           flex-direction: row;
           justify-content: flex-end;
+          column-gap: 0.75rem;
+          align-items: flex-start;
         }
       `}</style>
       <form onSubmit={formik.handleSubmit}>
-        <input hidden name="id" value={initialValues.id} />
+        <input hidden name="id" value={initialValues.id} readOnly />
         <TextField
           name="invoice_num"
           type="number"
@@ -85,6 +94,9 @@ const EditInvoiceForm = ({ onSuccess, initialValues }: EditInvoiceFormProps) => 
         <InvoiceTasks onChange={formik.setFieldValue} defaultValue={initialValues.entries} />
         <div>
           <ErrorMessage>{error}</ErrorMessage>
+          <IconButton onClick={() => deleteInvoice(initialValues.id)}>
+            <DeleteIcon />
+          </IconButton>
           <Button loading={loading} type="submit">
             Save
           </Button>

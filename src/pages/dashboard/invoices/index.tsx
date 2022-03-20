@@ -57,6 +57,7 @@ function Invoices() {
       <Modal show={magicInvoiceModal} setShow={setMagicInvoiceModal} title="Smart Invoice">
         {data && (
           <NewInvoiceForm
+            key={data[0].invoice_num}
             initialValues={{
               invoice_num: data[0].invoice_num + 1,
               recipient: data[0].recipient,
@@ -64,7 +65,10 @@ function Invoices() {
               entries: data[0].entries,
               date: format(new Date(), "yyyy-MM-dd"),
             }}
-            onSuccess={() => setMagicInvoiceModal(false)}
+            onSuccess={() => {
+              setMagicInvoiceModal(false)
+              callback()
+            }}
           />
         )}
       </Modal>
@@ -90,7 +94,13 @@ function Invoices() {
                 {
                   type: "action",
                   title: "Auto-magic",
-                  value: <Button onClick={() => setMagicInvoiceModal(true)}>Generate</Button>,
+                  value: (
+                    <Button
+                      disabled={!(data && data.length > 0)}
+                      onClick={() => setMagicInvoiceModal(true)}>
+                      Generate
+                    </Button>
+                  ),
                 },
               ]}
             />
