@@ -24,7 +24,7 @@ function useProtocol(handler: ApiHandler, useAuth: boolean = true) {
     } else {
       try {
         const token = req.cookies.AUTH_TOKEN
-        if (token && verify(token, process.env.ACCESS_TOKEN_SECRET) && useAuth) {
+        if ((token && verify(token, process.env.ACCESS_TOKEN_SECRET)) || !useAuth) {
           await handler[req.method](req, res)
         } else {
           return res.status(401).json({ error: `Unauthorized` })
