@@ -35,6 +35,7 @@ const Button = ({
           cursor: pointer;
           transition: 0.1s all;
           position: relative;
+          pointer-events: ${loading ? "none" : "all"};
         }
 
         button:hover {

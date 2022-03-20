@@ -4,12 +4,13 @@ import { ErrorIcon } from "./icons"
 interface ErrorMessageProps {
   children?: string
   show?: boolean
+  major: boolean
 }
 
-const ErrorMessage = ({ children, show = true }: ErrorMessageProps) => {
+const ErrorMessage = ({ children, show = true, major }: ErrorMessageProps) => {
   if (!show || !children) return null
   return (
-    <div>
+    <div className={major ? "major" : ""}>
       <style jsx>{`
         div {
           width: 100%;
@@ -27,6 +28,25 @@ const ErrorMessage = ({ children, show = true }: ErrorMessageProps) => {
           width: 1rem;
           height: 1rem;
           margin-right: 0.25rem;
+        }
+
+        .major {
+          justify-content: center;
+          font-size: 1.15rem;
+          font-weight: 700;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          margin: auto;
+          pointer-events: none;
+        }
+
+        .major > :global(svg) {
+          width: 1.5rem;
+          height: 1.5rem;
+          margin-right: 0.5rem;
         }
       `}</style>
       <ErrorIcon />

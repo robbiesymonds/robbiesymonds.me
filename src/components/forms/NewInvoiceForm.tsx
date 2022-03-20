@@ -2,6 +2,7 @@ import InvoiceTasks from "@ui/blocks/InvoiceTasks"
 import { Button, TextField } from "@ui/controls"
 import { ErrorMessage } from "@ui/display"
 import useFetch from "@utils/useFetch"
+import { format } from "date-fns"
 import { useFormik } from "formik"
 import { memo } from "react"
 
@@ -15,7 +16,7 @@ const NewInvoiceForm = ({ onSuccess }: NewInvoiceFormProps) => {
   const formik = useFormik({
     initialValues: {
       invoice_num: null,
-      date: null,
+      date: format(new Date(), "yyyy-MM-dd"),
       recipient: null,
       recipient_info: null,
       entries: null,
@@ -58,7 +59,7 @@ const NewInvoiceForm = ({ onSuccess }: NewInvoiceFormProps) => {
           name="date"
           type="date"
           placeholder="Date"
-          defaultValue="today"
+          defaultValue={format(new Date(), "yyyy-MM-dd")}
           maxWidth={15}
           onChange={formik.handleChange}
         />

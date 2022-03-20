@@ -1,5 +1,5 @@
 import BREAKPOINTS from "@constants/breakpoints"
-import { Heading, Text } from "@ui/display"
+import { Heading, Spinner, Text } from "@ui/display"
 import { Card } from "@ui/layout"
 import { memo } from "react"
 
@@ -41,6 +41,14 @@ const Statistics = ({ data }: StatisticsProps) => {
             border: none;
           }
 
+          span {
+            padding-top: 0.35rem;
+            padding-bottom: 0.55rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            display: block;
+          }
+
           @media (max-width: ${BREAKPOINTS.md}px) {
             .stats {
               flex-direction: column;
@@ -66,7 +74,17 @@ const Statistics = ({ data }: StatisticsProps) => {
                   style={{ opacity: 0.75, marginBottom: `${type === "action" ? 0.5 : 0}rem` }}>
                   {title}
                 </Text>
-                {type === "action" ? value : <Heading size={2}>{value as string}</Heading>}
+                {type === "action" ? (
+                  value
+                ) : (
+                  <Heading size={2}>
+                    {(value as string) ?? (
+                      <span>
+                        <Spinner />
+                      </span>
+                    )}
+                  </Heading>
+                )}
               </div>
             ))}
         </div>

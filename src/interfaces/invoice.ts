@@ -7,9 +7,10 @@ export interface InvoiceTask {
 }
 
 export interface Invoice {
+  id: string
   invoice_num: number
   recipient: string
   recipient_info: string
-  entires: Array<InvoiceTask>
+  entries: Array<InvoiceTask>
   date: Date
 }

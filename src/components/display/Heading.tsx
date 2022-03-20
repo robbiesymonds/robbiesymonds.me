@@ -8,7 +8,7 @@ const FONT_SIZES: Record<fontSizes, number> = {
   3: 3.25,
 }
 interface HeadingProps {
-  children: string
+  children: string | JSX.Element
   size: fontSizes
   bold?: boolean
 }

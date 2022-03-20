@@ -24,7 +24,7 @@ function useFetch<T>(url: string, options?: RequestInit & { callbackOnly?: boole
   )
 
   React.useEffect(() => {
-    if (!options.callbackOnly) runFetch(options)
+    if (!options?.callbackOnly) runFetch(options)
   }, [runFetch, options])
 
   return { data, error, loading, callback: runFetch }

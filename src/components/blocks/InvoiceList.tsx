@@ -1,12 +1,15 @@
 import BREAKPOINTS from "@constants/breakpoints"
+import { Invoice } from "@interfaces/invoice"
 import { IconButton } from "@ui/controls"
 import { Spinner, Text } from "@ui/display"
 import { DownloadIcon, TuneIcon } from "@ui/display/icons"
 import { Card } from "@ui/layout"
+import useInvoiceNumber from "@utils/useInvoiceNumber"
+import { format } from "date-fns"
 import { memo } from "react"
 
 interface InvoiceListProps {
-  data: []
+  data: Invoice[]
 }
 
 const InvoiceList = ({ data }: InvoiceListProps) => {
@@ -52,19 +55,19 @@ const InvoiceList = ({ data }: InvoiceListProps) => {
       `}</style>
       <Card padding={0}>
         {data ? (
-          <>
-            <div className="invoice">
+          data.map((i) => (
+            <div key={i.id} className="invoice">
               <Text size="md" weight="700">
                 <Text
                   as="span"
                   size="md"
                   style={{ opacity: 0.65, fontFamily: "Product Sans", marginRight: "0.5rem" }}>
-                  #014
+                  {useInvoiceNumber(i.invoice_num)}
                 </Text>
-                Anagraph Pty Ltd
+                {i.recipient}
               </Text>
               <div>
-                <Text>7th, March 2022</Text>
+                <Text>{format(new Date(i.date), "do, LLLL yyyy")}</Text>
                 <div className="actions">
                   <IconButton>
                     <TuneIcon />
@@ -75,7 +78,7 @@ const InvoiceList = ({ data }: InvoiceListProps) => {
                 </div>
               </div>
             </div>
-          </>
+          ))
         ) : (
           <div className="loading">
             <Spinner />
