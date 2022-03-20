@@ -17,14 +17,14 @@ type ApiHandler = Partial<
   Record<HTTPMethod, (req: NextApiRequest, res: NextApiResponse) => unknown | Promise<unknown>>
 >
 
-function useProtocol(handler: ApiHandler) {
+function useProtocol(handler: ApiHandler, useAuth: boolean = true) {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     if (!handler[req.method]) {
       return res.status(405).json({ error: `Method ${req.method} Not Allowed` })
     } else {
       try {
         const token = req.cookies.AUTH_TOKEN
-        if (token && verify(token, process.env.ACCESS_TOKEN_SECRET)) {
+        if (token && verify(token, process.env.ACCESS_TOKEN_SECRET) && useAuth) {
           await handler[req.method](req, res)
         } else {
           return res.status(401).json({ error: `Unauthorized` })

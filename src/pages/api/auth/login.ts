@@ -28,4 +28,4 @@ function login(req: NextApiRequest, res: NextApiResponse<Response>) {
   return res.status(401).json({ success: false, error: RESPONSES.SOMETHING_WENT_WRONG })
 }
 
-export default useProtocol({ POST: login })
+export default useProtocol({ POST: login }, false)
