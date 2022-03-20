@@ -3,16 +3,34 @@ import { Invoice } from "@interfaces/invoice"
 import { IconButton } from "@ui/controls"
 import { Spinner, Text } from "@ui/display"
 import { DownloadIcon, TuneIcon } from "@ui/display/icons"
-import { Card } from "@ui/layout"
+import { EditInvoiceForm } from "@ui/forms"
+import { Card, Modal } from "@ui/layout"
+import useFetch from "@utils/useFetch"
 import useInvoiceNumber from "@utils/useInvoiceNumber"
 import { format } from "date-fns"
-import { memo } from "react"
+import { memo, useState } from "react"
 
 interface InvoiceListProps {
   data: Invoice[]
+  loading: boolean
+  onUpdate?: () => void
 }
 
-const InvoiceList = ({ data }: InvoiceListProps) => {
+const InvoiceList = ({ data, loading, onUpdate }: InvoiceListProps) => {
+  const [editModalState, setEditModalState] = useState<boolean>(false)
+  const [editInvoiceState, setEditInvoiceState] = useState<Invoice>(null)
+  const downloadQuery = useFetch<string>(`/api/invoices/download`, { callbackOnly: true })
+
+  const downloadInvoice = async (id: string) => {
+    const data = await downloadQuery.callback({ body: JSON.stringify({ id }) })
+    console.log(data)
+  }
+
+  const editInvoice = (i: Invoice) => {
+    setEditInvoiceState(i)
+    setEditModalState(true)
+  }
+
   return (
     <>
       <style jsx>{`
@@ -53,8 +71,27 @@ const InvoiceList = ({ data }: InvoiceListProps) => {
           }
         }
       `}</style>
+      <Modal show={editModalState} setShow={setEditModalState} title="Edit Invoice">
+        {editInvoiceState && (
+          <EditInvoiceForm
+            key={editInvoiceState.id}
+            onSuccess={() => {
+              setEditModalState(false)
+              onUpdate()
+            }}
+            initialValues={{
+              id: editInvoiceState.id,
+              invoice_num: editInvoiceState.invoice_num,
+              recipient: editInvoiceState.recipient,
+              recipient_info: editInvoiceState.recipient_info,
+              entries: editInvoiceState.entries,
+              date: format(new Date(editInvoiceState.date), "yyyy-MM-dd"),
+            }}
+          />
+        )}
+      </Modal>
       <Card padding={0}>
-        {data ? (
+        {!loading && data ? (
           data.map((i) => (
             <div key={i.id} className="invoice">
               <Text size="md" weight="700">
@@ -69,10 +106,10 @@ const InvoiceList = ({ data }: InvoiceListProps) => {
               <div>
                 <Text>{format(new Date(i.date), "do, LLLL yyyy")}</Text>
                 <div className="actions">
-                  <IconButton>
+                  <IconButton onClick={() => editInvoice(i)}>
                     <TuneIcon />
                   </IconButton>
-                  <IconButton>
+                  <IconButton loading={downloadQuery.loading} onClick={() => downloadInvoice(i.id)}>
                     <DownloadIcon />
                   </IconButton>
                 </div>

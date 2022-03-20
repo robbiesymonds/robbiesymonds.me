@@ -12,5 +12,5 @@ export interface Invoice {
   recipient: string
   recipient_info: string
   entries: Array<InvoiceTask>
-  date: Date
+  date: string
 }

@@ -3,35 +3,28 @@ import InvoiceTasks from "@ui/blocks/InvoiceTasks"
 import { Button, TextField } from "@ui/controls"
 import { ErrorMessage } from "@ui/display"
 import useFetch from "@utils/useFetch"
-import { format } from "date-fns"
 import { useFormik } from "formik"
 import { memo } from "react"
 
-interface NewInvoiceFormProps {
+interface EditInvoiceFormProps {
   onSuccess: () => void
-  initialValues?: {
+  initialValues: {
+    id: string
     invoice_num: number
-    date: string
     recipient: string
     recipient_info: string
     entries: Array<InvoiceTask>
+    date: string
   }
 }
 
-const defaultValues = {
-  invoice_num: null,
-  date: format(new Date(), "yyyy-MM-dd"),
-  recipient: null,
-  recipient_info: null,
-  entries: null,
-}
-
-const NewInvoiceForm = ({ onSuccess, initialValues = defaultValues }: NewInvoiceFormProps) => {
-  const { loading, error, callback } = useFetch("/api/invoices/new", { callbackOnly: true })
+const EditInvoiceForm = ({ onSuccess, initialValues }: EditInvoiceFormProps) => {
+  const { loading, error, callback } = useFetch("/api/invoices/update", { callbackOnly: true })
 
   const formik = useFormik({
     initialValues,
     onSubmit: async (values) => {
+      console.log(values)
       const data = await callback({ body: JSON.stringify(values) })
       if (data.success) onSuccess()
     },
@@ -58,6 +51,7 @@ const NewInvoiceForm = ({ onSuccess, initialValues = defaultValues }: NewInvoice
         }
       `}</style>
       <form onSubmit={formik.handleSubmit}>
+        <input hidden name="id" value={initialValues.id} />
         <TextField
           name="invoice_num"
           type="number"
@@ -92,7 +86,7 @@ const NewInvoiceForm = ({ onSuccess, initialValues = defaultValues }: NewInvoice
         <div>
           <ErrorMessage>{error}</ErrorMessage>
           <Button loading={loading} type="submit">
-            Create
+            Save
           </Button>
         </div>
       </form>
@@ -100,4 +94,4 @@ const NewInvoiceForm = ({ onSuccess, initialValues = defaultValues }: NewInvoice
   )
 }
 
-export default memo(NewInvoiceForm)
+export default memo(EditInvoiceForm)

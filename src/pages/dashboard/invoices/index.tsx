@@ -1,3 +1,4 @@
+import { RESPONSES } from "@interfaces/api"
 import { Invoice } from "@interfaces/invoice"
 import { InvoiceList, Statistics } from "@ui/blocks"
 import { Button, IconButton } from "@ui/controls"
@@ -9,6 +10,7 @@ import { Dashboard } from "@ui/sections"
 import useCurrency from "@utils/useCurrency"
 import useDateDifference from "@utils/useDateDifference"
 import useFetch from "@utils/useFetch"
+import { format } from "date-fns"
 import { useMemo, useState } from "react"
 
 const getStatistics = (data: Invoice[]) => {
@@ -37,15 +39,34 @@ const getStatistics = (data: Invoice[]) => {
 
 function Invoices() {
   const [newInvoiceModal, setNewInvoiceModal] = useState<boolean>(false)
+  const [magicInvoiceModal, setMagicInvoiceModal] = useState<boolean>(false)
 
-  const { data, error } = useFetch<Array<Invoice>>("/api/invoices/get")
-
+  const { data, loading, error, callback } = useFetch<Array<Invoice>>("/api/invoices/get")
   const { yearTotal, lastInvoice } = useMemo(() => getStatistics(data), [data])
 
   return (
     <>
       <Modal show={newInvoiceModal} setShow={setNewInvoiceModal} title="New Invoice">
-        <NewInvoiceForm onSuccess={() => setNewInvoiceModal(false)} />
+        <NewInvoiceForm
+          onSuccess={() => {
+            setNewInvoiceModal(false)
+            callback()
+          }}
+        />
+      </Modal>
+      <Modal show={magicInvoiceModal} setShow={setMagicInvoiceModal} title="Smart Invoice">
+        {data && (
+          <NewInvoiceForm
+            initialValues={{
+              invoice_num: data[0].invoice_num + 1,
+              recipient: data[0].recipient,
+              recipient_info: data[0].recipient_info,
+              entries: data[0].entries,
+              date: format(new Date(), "yyyy-MM-dd"),
+            }}
+            onSuccess={() => setMagicInvoiceModal(false)}
+          />
+        )}
       </Modal>
       <Container maxWidth={80} align="center">
         <div
@@ -66,13 +87,17 @@ function Invoices() {
               data={[
                 { title: "This Year", value: yearTotal },
                 { title: "Last Invoice", value: lastInvoice },
-                { type: "action", title: "Auto-magic", value: <Button>Generate</Button> },
+                {
+                  type: "action",
+                  title: "Auto-magic",
+                  value: <Button onClick={() => setMagicInvoiceModal(true)}>Generate</Button>,
+                },
               ]}
             />
-            <InvoiceList data={data} />
+            <InvoiceList loading={loading} data={data} onUpdate={() => callback()} />
           </>
         ) : (
-          <ErrorMessage major>Something went wrong!</ErrorMessage>
+          <ErrorMessage major>{RESPONSES.SOMETHING_WENT_WRONG}</ErrorMessage>
         )}
       </Container>
     </>

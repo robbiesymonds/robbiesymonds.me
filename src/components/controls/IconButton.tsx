@@ -25,7 +25,6 @@ const IconButton = ({ children, disabled, loading, outline, onClick }: IconButto
             font-size: 1rem;
             cursor: pointer;
             position: relative;
-            opacity: ${loading ? 0 : 1};
             transition: all 0.1s;
             width: 2rem;
             height: 2rem;

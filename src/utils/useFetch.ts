@@ -7,7 +7,7 @@ function useFetch<T>(url: string, options?: RequestInit & { callbackOnly?: boole
   const [loading, setLoading] = React.useState<boolean>(false)
 
   const runFetch = useCallback(
-    async (options: RequestInit) => {
+    async (options?: RequestInit) => {
       setLoading(true)
       const res = await fetch(url, {
         method: "POST",

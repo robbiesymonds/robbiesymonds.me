@@ -6,18 +6,21 @@ import { v4 } from "uuid"
 
 interface InvoiceTasksProps {
   onChange?: (field: string, string: any) => void
+  defaultValue: Array<InvoiceTask>
 }
 
-const InvoiceTasks = ({ onChange }: InvoiceTasksProps) => {
-  const [tasks, setTasks] = useState<Array<InvoiceTask>>([
-    {
-      _id: v4(),
-      title: null,
-      description: null,
-      rate: null,
-      hours: null,
-    },
-  ])
+const defaultValues: InvoiceTask[] = [
+  {
+    _id: v4(),
+    title: null,
+    description: null,
+    rate: null,
+    hours: null,
+  },
+]
+
+const InvoiceTasks = ({ onChange, defaultValue }: InvoiceTasksProps) => {
+  const [tasks, setTasks] = useState<Array<InvoiceTask>>(defaultValue ?? defaultValues)
 
   function addTask() {
     setTasks([
@@ -83,49 +86,50 @@ const InvoiceTasks = ({ onChange }: InvoiceTasksProps) => {
         }
       `}</style>
       <div className="container">
-        {tasks.map(({ _id, title, description, rate, hours }, i) => (
-          <div key={_id} className="task">
-            {i > 0 && (
-              <div>
-                <IconButton onClick={() => removeTask(i)}>
-                  <DeleteIcon />
-                </IconButton>
-              </div>
-            )}
-            <TextField
-              defaultValue={title}
-              name="title"
-              type="text"
-              placeholder="Title"
-              maxWidth={35}
-              onChange={(e) => updateTask("title", i, e.target.value)}
-            />
-            <TextField
-              defaultValue={description}
-              name="description"
-              type="text"
-              placeholder="Description"
-              maxWidth={35}
-              onChange={(e) => updateTask("description", i, e.target.value)}
-            />
-            <TextField
-              defaultValue={rate}
-              name="rate"
-              type="number"
-              placeholder="Rate"
-              maxWidth={15}
-              onChange={(e) => updateTask("rate", i, parseInt(e.target.value))}
-            />
-            <TextField
-              defaultValue={hours}
-              name="hours"
-              type="number"
-              placeholder="Hours"
-              maxWidth={15}
-              onChange={(e) => updateTask("hours", i, parseInt(e.target.value))}
-            />
-          </div>
-        ))}
+        {tasks &&
+          tasks.map(({ _id, title, description, rate, hours }, i) => (
+            <div key={_id} className="task">
+              {i > 0 && (
+                <div>
+                  <IconButton onClick={() => removeTask(i)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </div>
+              )}
+              <TextField
+                defaultValue={title}
+                name="title"
+                type="text"
+                placeholder="Title"
+                maxWidth={35}
+                onChange={(e) => updateTask("title", i, e.target.value)}
+              />
+              <TextField
+                defaultValue={description}
+                name="description"
+                type="text"
+                placeholder="Description"
+                maxWidth={35}
+                onChange={(e) => updateTask("description", i, e.target.value)}
+              />
+              <TextField
+                defaultValue={rate}
+                name="rate"
+                type="number"
+                placeholder="Rate"
+                maxWidth={15}
+                onChange={(e) => updateTask("rate", i, parseInt(e.target.value))}
+              />
+              <TextField
+                defaultValue={hours}
+                name="hours"
+                type="number"
+                placeholder="Hours"
+                maxWidth={15}
+                onChange={(e) => updateTask("hours", i, parseInt(e.target.value))}
+              />
+            </div>
+          ))}
       </div>
       <div style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
         <IconButton outline onClick={() => addTask()}>
