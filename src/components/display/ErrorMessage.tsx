@@ -4,7 +4,7 @@ import { ErrorIcon } from "./icons"
 interface ErrorMessageProps {
   children?: string
   show?: boolean
-  major: boolean
+  major?: boolean
 }
 
 const ErrorMessage = ({ children, show = true, major }: ErrorMessageProps) => {
