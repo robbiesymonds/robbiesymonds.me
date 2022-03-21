@@ -70,10 +70,41 @@ const InvoiceList = ({ data, loading, onUpdate }: InvoiceListProps) => {
           margin: 4rem auto;
         }
 
+        .info {
+          height: 2rem;
+          border-left: 1px solid var(--theme-colors-border);
+          border-right: 1px solid var(--theme-colors-border);
+          padding: 0 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          min-width: 8rem;
+        }
+
+        .info i {
+          display: none;
+        }
+
         @media (max-width: ${BREAKPOINTS.md}px) {
           .invoice {
             flex-direction: column;
             row-gap: 0.5rem;
+          }
+
+          .info :global(span) {
+            display: none !important;
+          }
+
+          .info {
+            min-width: unset;
+          }
+
+          .info > :global(*) {
+            display: none !important;
+          }
+
+          .info i {
+            display: block !important;
           }
         }
       `}</style>
@@ -113,18 +144,24 @@ const InvoiceList = ({ data, loading, onUpdate }: InvoiceListProps) => {
                 <Text size="sm" style={{ opacity: 0.5 }}>
                   {useInvoiceTotal(i)}
                 </Text>
-                <div
-                  style={{
-                    height: "2rem",
-                    borderLeft: "1px solid var(--theme-colors-border)",
-                    borderRight: "1px solid var(--theme-colors-border)",
-                    padding: "0 1rem",
-                    display: "flex",
-                    alignItems: "center",
-                  }}>
+                <div className="info">
                   <Text style={{ whiteSpace: "nowrap" }}>
-                    {format(new Date(i.date), "do, LLLL yyyy")}
+                    {format(new Date(i.date), "do, ")}
+                    <span
+                      style={{
+                        display: "inline-block",
+                        maxWidth: "3rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        verticalAlign: "bottom",
+                      }}>
+                      {format(new Date(i.date), "LLLL")}
+                    </span>
+                    {format(new Date(i.date), " yyyy")}
                   </Text>
+                  <i>
+                    <Text>{format(new Date(i.date), "dd/MM/yyyy")}</Text>
+                  </i>
                 </div>
                 <div className="actions">
                   <IconButton onClick={() => editInvoice(i)}>
