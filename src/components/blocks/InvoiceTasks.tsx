@@ -118,7 +118,7 @@ const InvoiceTasks = ({ onChange, defaultValue }: InvoiceTasksProps) => {
                 type="number"
                 placeholder="Rate"
                 maxWidth={15}
-                onChange={(e) => updateTask("rate", i, parseInt(e.target.value))}
+                onChange={(e) => updateTask("rate", i, parseFloat(e.target.value))}
               />
               <TextField
                 defaultValue={hours}
@@ -126,7 +126,7 @@ const InvoiceTasks = ({ onChange, defaultValue }: InvoiceTasksProps) => {
                 type="number"
                 placeholder="Hours"
                 maxWidth={15}
-                onChange={(e) => updateTask("hours", i, parseInt(e.target.value))}
+                onChange={(e) => updateTask("hours", i, parseFloat(e.target.value))}
               />
             </div>
           ))}

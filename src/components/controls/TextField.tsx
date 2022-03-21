@@ -53,7 +53,7 @@ const TextField = ({
           defaultValue={defaultValue}
           onChange={onChange}
           disabled={disabled}
-          step="0.01"
+          step="any"
         />
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </div>
