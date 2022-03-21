@@ -22,7 +22,7 @@ async function newInvoice(req: NextApiRequest, res: NextApiResponse<Response>) {
           body.invoice_num,
           body.recipient,
           body.recipient_info,
-          JSON.stringify(body.entries),
+          JSON.stringify(body.entries.filter((e) => e.title && e.description && e.hours && e.rate)),
           body.date,
         ]
       )

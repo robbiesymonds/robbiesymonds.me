@@ -30,6 +30,7 @@ function useProtocol(handler: ApiHandler, useAuth: boolean = true) {
           return res.status(401).json({ error: `Unauthorized` })
         }
       } catch (e) {
+        console.log(e)
         return res.status(500).json({ error: e })
       }
     }

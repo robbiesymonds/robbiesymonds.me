@@ -5,10 +5,10 @@ import { Spinner, Text } from "@ui/display"
 import { DownloadIcon, TuneIcon } from "@ui/display/icons"
 import { EditInvoiceForm } from "@ui/forms"
 import { Card, Modal } from "@ui/layout"
-import useCurrency from "@utils/useCurrency"
-import useFetch from "@utils/useFetch"
 import useInvoiceNumber from "@utils/useInvoiceNumber"
+import useInvoiceTotal from "@utils/useInvoiceTotal"
 import { format } from "date-fns"
+import download from "downloadjs"
 import { memo, useState } from "react"
 
 interface InvoiceListProps {
@@ -17,20 +17,20 @@ interface InvoiceListProps {
   onUpdate?: () => void
 }
 
-const invoiceTotal = (i: Invoice) => {
-  let total: number = 0
-  i.entries.forEach(({ hours, rate }) => (total += hours * rate))
-  return useCurrency(total)
-}
-
 const InvoiceList = ({ data, loading, onUpdate }: InvoiceListProps) => {
   const [editModalState, setEditModalState] = useState<boolean>(false)
   const [editInvoiceState, setEditInvoiceState] = useState<Invoice>(null)
-  const downloadQuery = useFetch<string>(`/api/invoices/download`, { callbackOnly: true })
 
-  const downloadInvoice = async (id: string) => {
-    const data = await downloadQuery.callback({ body: JSON.stringify({ id }) })
-    console.log(data)
+  const downloadInvoice = async (i: Invoice) => {
+    const res = await fetch("/api/invoices/download", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: i.id }),
+    })
+    const blob = await res.blob()
+    download(blob, `${format(new Date(i.date), "yyyy-MM-dd")}.pdf`)
   }
 
   const editInvoice = (i: Invoice) => {
@@ -111,7 +111,7 @@ const InvoiceList = ({ data, loading, onUpdate }: InvoiceListProps) => {
               </Text>
               <div>
                 <Text size="sm" style={{ opacity: 0.5 }}>
-                  {invoiceTotal(i)}
+                  {useInvoiceTotal(i)}
                 </Text>
                 <div
                   style={{
@@ -130,7 +130,7 @@ const InvoiceList = ({ data, loading, onUpdate }: InvoiceListProps) => {
                   <IconButton onClick={() => editInvoice(i)}>
                     <TuneIcon />
                   </IconButton>
-                  <IconButton loading={downloadQuery.loading} onClick={() => downloadInvoice(i.id)}>
+                  <IconButton onClick={() => downloadInvoice(i)}>
                     <DownloadIcon />
                   </IconButton>
                 </div>
