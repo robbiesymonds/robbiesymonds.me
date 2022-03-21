@@ -158,7 +158,7 @@ async function downloadInvoice(req: NextApiRequest, res: NextApiResponse) {
 
     const lineTotalWidth = arialFont.widthOfTextAtSize(`${(e.hours * e.rate).toFixed(2)}`, 9)
     p.drawText(`${(e.hours * e.rate).toFixed(2)}`, {
-      x: 457 + (80 - lineTotalWidth),
+      x: 457 + (76 - lineTotalWidth),
       y: offsetY + 26,
       size: 9,
     })
