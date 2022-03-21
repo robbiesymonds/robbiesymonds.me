@@ -6,7 +6,9 @@ import { NextApiRequest, NextApiResponse } from "next"
 
 async function getInvoices(req: NextApiRequest, res: NextApiResponse<DataResponse<Invoice[]>>) {
   try {
-    const data = await useQuery<Invoice[]>("SELECT * FROM `invoices` WHERE 1")
+    const data = await useQuery<Invoice[]>(
+      "SELECT * FROM `invoices` WHERE 1 ORDER BY invoice_num DESC"
+    )
     return res.status(200).json({ success: true, data })
   } catch (e) {
     console.log("Error: ", e)

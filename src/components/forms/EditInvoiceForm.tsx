@@ -94,7 +94,7 @@ const EditInvoiceForm = ({ onSuccess, initialValues }: EditInvoiceFormProps) => 
         <InvoiceTasks onChange={formik.setFieldValue} defaultValue={initialValues.entries} />
         <div>
           <ErrorMessage>{error}</ErrorMessage>
-          <IconButton onClick={() => deleteInvoice(initialValues.id)}>
+          <IconButton loading={deleteQuery.loading} onClick={() => deleteInvoice(initialValues.id)}>
             <DeleteIcon />
           </IconButton>
           <Button loading={loading} type="submit">

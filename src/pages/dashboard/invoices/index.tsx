@@ -46,32 +46,38 @@ function Invoices() {
 
   return (
     <>
-      <Modal show={newInvoiceModal} setShow={setNewInvoiceModal} title="New Invoice">
-        <NewInvoiceForm
-          onSuccess={() => {
-            setNewInvoiceModal(false)
-            callback()
-          }}
-        />
+      <Modal
+        show={newInvoiceModal || magicInvoiceModal}
+        setShow={newInvoiceModal ? setNewInvoiceModal : setMagicInvoiceModal}
+        title={`${newInvoiceModal ? "New" : "Smart"} Invoice`}>
+        <>
+          {newInvoiceModal && (
+            <NewInvoiceForm
+              onSuccess={() => {
+                setNewInvoiceModal(false)
+                callback()
+              }}
+            />
+          )}
+          {magicInvoiceModal && (
+            <NewInvoiceForm
+              key={data[0].invoice_num}
+              initialValues={{
+                invoice_num: data[0].invoice_num + 1,
+                recipient: data[0].recipient,
+                recipient_info: data[0].recipient_info,
+                entries: data[0].entries,
+                date: format(new Date(), "yyyy-MM-dd"),
+              }}
+              onSuccess={() => {
+                setMagicInvoiceModal(false)
+                callback()
+              }}
+            />
+          )}
+        </>
       </Modal>
-      <Modal show={magicInvoiceModal} setShow={setMagicInvoiceModal} title="Smart Invoice">
-        {data && (
-          <NewInvoiceForm
-            key={data[0].invoice_num}
-            initialValues={{
-              invoice_num: data[0].invoice_num + 1,
-              recipient: data[0].recipient,
-              recipient_info: data[0].recipient_info,
-              entries: data[0].entries,
-              date: format(new Date(), "yyyy-MM-dd"),
-            }}
-            onSuccess={() => {
-              setMagicInvoiceModal(false)
-              callback()
-            }}
-          />
-        )}
-      </Modal>
+
       <Container maxWidth={80} align="center">
         <div
           style={{
