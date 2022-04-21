@@ -3,9 +3,11 @@ import { NextRequest, NextResponse } from "next/server"
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.AUTH_TOKEN
-  if (token && verify(token, process.env.ACCESS_TOKEN_SECRET)) {
-    return NextResponse.next()
+  try {
+    if (token && verify(token, process.env.ACCESS_TOKEN_SECRET)) {
+      return NextResponse.next()
+    }
+  } catch {
+    return NextResponse.redirect("/auth/login")
   }
-
-  return NextResponse.redirect("/auth/login")
 }
