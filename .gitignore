@@ -1,5 +1,7 @@
 # files
 .env
+.DS_Store
+*.log
 
 # directories
 target/
