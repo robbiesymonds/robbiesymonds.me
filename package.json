@@ -1,13 +1,18 @@
 {
   "name": "robbiesymonds-me",
-  "version": "0.1.0",
-  "main": "dist/index.html",
-  "repository": "https://github.com/robbiesymonds/robbiesymonds.me.git",
-  "author": "robbiesymonds <robbiesymonds26@gmail.com>",
+  "version": "0.2.0",
+  "main": "public/index.html",
+  "repository": "https://github.com/robbiesymonds/robbiesymonds.me",
+  "author": "Robbie Symonds",
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "dev": "trunk serve --port 3000",
-    "build": "trunk build --release"
+    "build": "rm -rf public/wasm && yarn wasm-pack build ---target web --out-dir public/wasm"
+  },
+  "devDependencies": {
+    "wasm-pack": "^0.10.3"
+  },
+  "prettier": {
+    "semi": false
   }
 }

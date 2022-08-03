@@ -1,7 +1,8 @@
-# files
-.env
+# Files
 .DS_Store
 *.log
 
-# directories
+# Directories
+node_modules/
 target/
+wasm/
