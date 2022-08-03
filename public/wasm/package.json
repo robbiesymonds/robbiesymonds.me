@@ -1,0 +1,19 @@
+{
+  "name": "blob",
+  "collaborators": [
+    "Robbie Symonds"
+  ],
+  "version": "0.2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robbiesymonds/robbiesymonds.me"
+  },
+  "files": [
+    "blob_bg.wasm",
+    "blob.js",
+    "blob.d.ts"
+  ],
+  "module": "blob.js",
+  "types": "blob.d.ts",
+  "sideEffects": false
+}

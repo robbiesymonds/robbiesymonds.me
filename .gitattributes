@@ -1,2 +1,2 @@
-dist/* linguist-vendored
+wasm/* linguist-vendored
 index.html linguist-vendored

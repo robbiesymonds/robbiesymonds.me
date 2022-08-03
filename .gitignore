@@ -5,4 +5,3 @@
 # Directories
 node_modules/
 target/
-wasm/
