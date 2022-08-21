@@ -1,1 +1,2 @@
-public/* linguist-vendored
+public/wasm/** linguist-vendored
+public/index.html linguist-vendored
